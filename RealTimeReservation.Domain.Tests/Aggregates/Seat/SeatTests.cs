@@ -20,14 +20,14 @@ namespace RealTimeReservation.Domain.Tests
             var seat = new Seat(Guid.NewGuid());
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow;
-            var expiresInMinutes = TimeSpan.FromMinutes(5);
+            var reservationTimeToLive = TimeSpan.FromMinutes(5);
 
-            seat.Reserve(userId, now, expiresInMinutes);
+            seat.Reserve(userId, now, reservationTimeToLive);
 
             Assert.Equal(SeatStatus.Reserved, seat.Status);
             Assert.NotNull(seat.CurrentReservation);
             Assert.Equal(userId, seat.CurrentReservation!.UserId);
-            Assert.Equal(now.Add(expiresInMinutes), seat.CurrentReservation.ExpiresAt);
+            Assert.Equal(now.Add(reservationTimeToLive), seat.CurrentReservation.ExpiresAt);
         }
 
         [Fact]
@@ -36,12 +36,12 @@ namespace RealTimeReservation.Domain.Tests
             var seat = new Seat(Guid.NewGuid());
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow;
-            var expiresInMinutes = TimeSpan.FromMinutes(5);
+            var reservationTimeToLive = TimeSpan.FromMinutes(5);
 
-            seat.Reserve(userId, now, expiresInMinutes);
+            seat.Reserve(userId, now, reservationTimeToLive);
 
             Assert.Throws<SeatAlreadyReservedException>(() =>
-                seat.Reserve(Guid.NewGuid(), now, expiresInMinutes)
+                seat.Reserve(Guid.NewGuid(), now, reservationTimeToLive)
             );
         }
 
@@ -51,13 +51,13 @@ namespace RealTimeReservation.Domain.Tests
             var seat = new Seat(Guid.NewGuid());
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow;
-            var expiresInMinutes = TimeSpan.FromMinutes(5);
+            var reservationTimeToLive = TimeSpan.FromMinutes(5);
 
-            seat.Reserve(userId, now, expiresInMinutes);
+            seat.Reserve(userId, now, reservationTimeToLive);
             seat.ConfirmReservation(now);
 
             Assert.Throws<InvalidSeatStateException>(() =>
-                seat.Reserve(Guid.NewGuid(), now, expiresInMinutes)
+                seat.Reserve(Guid.NewGuid(), now, reservationTimeToLive)
             );
         }
 
@@ -67,9 +67,9 @@ namespace RealTimeReservation.Domain.Tests
             var seat = new Seat(Guid.NewGuid());
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow;
-            var expiresInMinutes = TimeSpan.FromMinutes(5);
+            var reservationTimeToLive = TimeSpan.FromMinutes(5);
 
-            seat.Reserve(userId, now, expiresInMinutes);
+            seat.Reserve(userId, now, reservationTimeToLive);
 
             seat.ConfirmReservation(now);
 
@@ -94,9 +94,9 @@ namespace RealTimeReservation.Domain.Tests
             var seat = new Seat(Guid.NewGuid());
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow;
-            var expiresInMinutes = TimeSpan.FromMinutes(1);
+            var reservationTimeToLive = TimeSpan.FromMinutes(1);
 
-            seat.Reserve(userId, now, expiresInMinutes);
+            seat.Reserve(userId, now, reservationTimeToLive);
 
             var expiredTime = now.AddMinutes(2);
 
@@ -126,9 +126,9 @@ namespace RealTimeReservation.Domain.Tests
             var seat = new Seat(Guid.NewGuid());
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow;
-            var expiresInMinutes = TimeSpan.FromMinutes(10);
+            var reservationTimeToLive = TimeSpan.FromMinutes(10);
 
-            seat.Reserve(userId, now, expiresInMinutes);
+            seat.Reserve(userId, now, reservationTimeToLive);
 
             seat.ReleaseIfExpired(now.AddMinutes(5));
 
@@ -142,9 +142,9 @@ namespace RealTimeReservation.Domain.Tests
             var seat = new Seat(Guid.NewGuid());
             var userId = Guid.NewGuid();
             var now = DateTime.UtcNow;
-            var expiresInMinutes = TimeSpan.FromMinutes(1);
+            var reservationTimeToLive = TimeSpan.FromMinutes(1);
 
-            seat.Reserve(userId, now, expiresInMinutes);
+            seat.Reserve(userId, now, reservationTimeToLive);
 
             var expiredTime = now.AddMinutes(2);
 

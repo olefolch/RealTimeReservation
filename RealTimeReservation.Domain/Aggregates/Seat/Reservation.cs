@@ -2,6 +2,7 @@
 {
     public class Reservation
     {
+        public Guid Id { get; private set; }
         public Guid UserId { get; private set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime ExpiresAt { get; private set; }
@@ -11,6 +12,7 @@
 
         internal Reservation(Guid userId, DateTime now, TimeSpan expiresInMinutes)
         {
+            Id = Guid.NewGuid();
             UserId = userId;
             CreatedAt = now;
             ExpiresAt = now.Add(expiresInMinutes);

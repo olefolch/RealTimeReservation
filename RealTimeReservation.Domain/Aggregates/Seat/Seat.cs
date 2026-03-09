@@ -16,7 +16,7 @@ namespace RealTimeReservation.Domain.Aggregates.Seat
             Status = SeatStatus.Available;
         }
 
-        public void Reserve(Guid userId, DateTime now, TimeSpan expiresInMinutes)
+        public void Reserve(Guid userId, DateTime now, TimeSpan reservationTimeToLive)
         {
             if (Status == SeatStatus.Reserved)
                 throw new SeatAlreadyReservedException();
@@ -26,7 +26,7 @@ namespace RealTimeReservation.Domain.Aggregates.Seat
                     $"Cannot reserve seat when status is {Status}."
                 );
 
-            var reservation = new Reservation(userId, now, expiresInMinutes);
+            var reservation = new Reservation(userId, now, reservationTimeToLive);
 
             CurrentReservation = reservation;
             Status = SeatStatus.Reserved;
